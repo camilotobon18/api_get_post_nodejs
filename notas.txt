@@ -1,0 +1,4 @@
+//bulma, similar a bostrap, trabaja solo CSS
+//bostrap, tiene CSS y JS
+//pug, sirve para la logica en el template
+
