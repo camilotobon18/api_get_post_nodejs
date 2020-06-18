@@ -87,11 +87,40 @@ app.post('/api/product', (req, res) => {
 })
 
 app.put('/api/product/:productId', (req, res) =>{
+    let productId = req.params.productId
+    let updateData = req.body
 
+    Product.findByIdAndUpdate(productId, updateData, (err, productUpdate) => {
+        if (err) return res.status(500).send({
+            message: `Failed to update data: ${err}`
+        })
+
+        res.status(200).send({product : productUpdate})
+    })
 })
 
 app.delete('/api/product/:productId', (req, res) =>{
+    let productId = req.params.productId
 
+    Product.findById(productId, (err, product) => {
+        if (err) return res.status(500).send({
+            message: `Error deleting: ${err}`
+        })
+
+        if (!product) return res.status(404).send({
+            message: `Product does not exist`
+        })
+
+        product.remove( err => {
+            if (err) return res.status(500).send({
+                message: `Error deleting: ${err}`
+            })
+
+            res.status(200).send({
+                message: `Product removed`
+            })
+        })
+    })
 })
 
 //server connect
@@ -104,4 +133,7 @@ mongoose.connect('mongodb://localhost:27017/produtswcg', (err, res) => {
         console.log(`Listening http://localhost:${ server.address().port }`)
     })
 })
+
+
+//con pug, se debe utilizar identacion para q lo contenga. similar a python
 
